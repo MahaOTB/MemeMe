@@ -42,13 +42,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         var botoomText: String?
         var originalImage: UIImage?
         var memoImage: UIImage?
-        
-        init(topText: String?, botoomText: String?, originalImage: UIImage?, memoImage: UIImage?){
-            self.topText = topText
-            self.botoomText = botoomText
-            self.originalImage = originalImage
-            self.memoImage  = memoImage
-        }
     }
     
     // MARK: Text Field Delegate objects
@@ -61,16 +54,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         imagePicker.delegate = self
-        textFieldTop.delegate = PreventTextDelegate
-        textFieldBottom.delegate = PreventTextDelegate
         
-        textFieldTop.defaultTextAttributes = memeTextAttributes
-        textFieldTop.textAlignment = .center
-        textFieldTop.adjustsFontSizeToFitWidth = true
-        
-        textFieldBottom.defaultTextAttributes = memeTextAttributes
-        textFieldBottom.textAlignment = .center
-        textFieldBottom.adjustsFontSizeToFitWidth = true
+        settingTextFieldDelegate(textFieldTop)
+        settingTextFieldDelegate(textFieldBottom)
         
         btnShare.isEnabled = false
     }
@@ -176,18 +162,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         toolBarBottom.isHidden = isHidden
     }
     
+    func settingTextFieldDelegate (_ textField: UITextField){
+        textField.delegate = PreventTextDelegate
+        textField.defaultTextAttributes = memeTextAttributes
+        textField.textAlignment = .center
+        textField.adjustsFontSizeToFitWidth = true
+    }
+    
     //Functions to show and hide keyboard
     
     @objc func keyboardWillShow(_ notification:Notification) {
         if textFieldBottom.isEditing && self.view.frame.origin.y == 0 {
-            self.view.frame.origin.y -= getKeyboardHeight(notification)
+            self.view.frame.origin.y = -getKeyboardHeight(notification)
         }
     }
     
     @objc func keyboardWillHide(_ notification: Notification) {
-        if self.view.frame.origin.y != 0{
-            self.view.frame.origin.y += getKeyboardHeight(notification)
-        }
+        self.view.frame.origin.y = 0
     }
     
     func getKeyboardHeight(_ notification:Notification) -> CGFloat {
