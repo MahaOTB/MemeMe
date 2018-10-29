@@ -10,7 +10,9 @@ import UIKit
 
 class MemesTableViewController1: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    // MARK: Outlets
     @IBOutlet weak var tvAllMemes: UITableView!
+    
     // MARK: Properties
     
     let cellIdentity = "memesCells"
@@ -19,7 +21,9 @@ class MemesTableViewController1: UIViewController, UITableViewDataSource, UITabl
         guard let memeArray = appDelegate?.memes else { return [] }
         return (memeArray)
     }
-
+    
+    // MARK: LifeCycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

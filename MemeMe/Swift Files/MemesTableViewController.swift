@@ -11,6 +11,7 @@ import UIKit
 class MemesTableViewController: UITableViewController {
     
     // MARK: Outlet
+    
     @IBOutlet var memesTable: UITableView!
     
     // MARK: Properties
@@ -18,11 +19,11 @@ class MemesTableViewController: UITableViewController {
     let cellIdentity = "memesCells"
     var memes: [Meme]?
     
+    // MARK: LifeCycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-
-    // MARK: - Table view data source
 
     override func viewWillAppear(_ animated: Bool) {
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
