@@ -11,11 +11,13 @@ import UIKit
 class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // MARK: Alerts
+    
     struct Alerts {
         static let AlertAction = "Ok"
         static let sourceUnavailable = "No photos in the Album"
         static let noImage = "No photo to share"
     }
+    
     // MARK: Outlet
     
     @IBOutlet weak var imageView: UIImageView!
@@ -28,6 +30,8 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     // MARK: Properties
     
+    var reEditedMeme: Meme?
+    var indexOfEditedMeme: Int?
     let imagePicker = UIImagePickerController()
     var defualtTextFieldTop: String?
     var defualtTextFieldTBottom: String?
@@ -47,11 +51,16 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         imagePicker.delegate = self
+        imageView.contentMode = .scaleAspectFit
         
         settingTextFieldDelegate(textFieldTop)
         settingTextFieldDelegate(textFieldBottom)
         
-        btnShare.isEnabled = false
+        guard let editedmeme = reEditedMeme else {
+            btnShare.isEnabled = false
+            return
+        }
+        editedMeme(editedmeme: editedmeme)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -68,6 +77,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
+    
     // MARK: Actions
     
     @IBAction func openPhotoAlbumAndCamera(_ sender: UIBarButtonItem) {
@@ -94,11 +104,13 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         let memoImgae = generateMemedImage()
         
         let activityController = UIActivityViewController(activityItems: [memoImgae], applicationActivities: nil)
+        activityController.popoverPresentationController?.sourceView = self.view
         present(activityController, animated: true)
         activityController.completionWithItemsHandler = { _, success, _, error in
             if success {
                 self.saveImage()
-                self.navigationController?.popViewController(animated: true)
+                self.navigationController?.setNavigationBarHidden(false, animated: true)
+                self.navigationController?.popToRootViewController(animated: true)
             } else if let errorOccur = error {
                 self.showAlert(title: "Error", message: errorOccur.localizedDescription)
             }
@@ -106,18 +118,14 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     }
     
     @IBAction func cancelImage(_ sender: UIBarButtonItem) {
-        imageView.image = nil
-        btnShare.isEnabled = false
-        textFieldTop.text = defualtTextFieldTop
-        textFieldBottom.text = defualtTextFieldTBottom
+        navigationController?.popViewController(animated: true)
     }
     
     
     // MARK: UIImagePickerControllerDelegate Functions
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]){
-        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            imageView.contentMode = .scaleAspectFit
+        if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             imageView.image = pickedImage
             btnShare.isEnabled = true
         }
@@ -141,6 +149,11 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         let meme = Meme(topText: textFieldTop.text, botoomText: textFieldBottom.text, originalImage: imageView.image, memoImage: generateMemedImage())
         
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        
+        if let index = indexOfEditedMeme {
+            appDelegate?.memes.remove(at: index)
+        }
+        
         appDelegate?.memes.append(meme)
     }
     
@@ -168,6 +181,12 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         textField.defaultTextAttributes = memeTextAttributes
         textField.textAlignment = .center
         textField.adjustsFontSizeToFitWidth = true
+    }
+    
+    func editedMeme (editedmeme: Meme){
+        imageView.image = editedmeme.originalImage
+        textFieldTop.text = editedmeme.topText
+        textFieldBottom.text = editedmeme.botoomText
     }
     
     //Functions to show and hide keyboard

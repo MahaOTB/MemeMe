@@ -13,11 +13,11 @@
         <scene sceneID="fPI-J1-t2s">
             <objects>
                 <collectionViewController id="bQi-Wu-cbr" customClass="MemesCollectionViewController" customModule="MemeMe" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="Gln-bq-ieG">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" contentInsetAdjustmentBehavior="never" dataMode="prototypes" id="Gln-bq-ieG">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ogH-2P-iyN">
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" sectionInsetReference="safeArea" id="ogH-2P-iyN">
                             <size key="itemSize" width="135" height="112"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
@@ -25,18 +25,23 @@
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectionCell" id="8EZ-9V-xyI" customClass="MemesCollectionViewCell" customModule="MemeMe" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="135" height="112"/>
+                                <rect key="frame" x="0.0" y="64" width="135" height="112"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                     <rect key="frame" x="0.0" y="0.0" width="135" height="112"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DNh-PD-tUn">
-                                            <rect key="frame" x="0.0" y="0.0" width="135" height="112"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DNh-PD-tUn">
+                                            <rect key="frame" x="10" y="20" width="125" height="82"/>
                                         </imageView>
                                     </subviews>
                                 </view>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="DNh-PD-tUn" secondAttribute="trailing" id="Ew8-bN-enR"/>
+                                    <constraint firstItem="DNh-PD-tUn" firstAttribute="top" secondItem="8EZ-9V-xyI" secondAttribute="top" constant="20" id="pzP-Mr-dmz"/>
+                                    <constraint firstItem="DNh-PD-tUn" firstAttribute="leading" secondItem="8EZ-9V-xyI" secondAttribute="leading" constant="10" id="unh-qf-tM4"/>
+                                    <constraint firstAttribute="bottom" secondItem="DNh-PD-tUn" secondAttribute="bottom" constant="10" id="yAZ-tN-QFg"/>
+                                </constraints>
                                 <size key="customSize" width="135" height="112"/>
                                 <connections>
                                     <outlet property="imageView" destination="DNh-PD-tUn" id="flV-Pq-gNT"/>
@@ -132,7 +137,7 @@
         <!--MemeEditorViewController-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController title="MemeEditorViewController" hidesBottomBarWhenPushed="YES" id="BYZ-38-t0r" customClass="MemeEditorViewController" customModule="MemeMe" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MemeEditorIdentity" title="MemeEditorViewController" hidesBottomBarWhenPushed="YES" id="BYZ-38-t0r" customClass="MemeEditorViewController" customModule="MemeMe" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -223,7 +228,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2185" y="-356"/>
+            <point key="canvasLocation" x="2940" y="-406"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="V6B-zo-fB8">
@@ -255,23 +260,39 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tBj-Ec-w00">
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                             </imageView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g6a-vs-mAZ">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <items>
+                                    <navigationItem title="Meme Image" id="xS2-n1-nBL">
+                                        <barButtonItem key="rightBarButtonItem" systemItem="edit" id="PdC-BL-MGJ">
+                                            <connections>
+                                                <action selector="reEditmeme:" destination="dqb-6J-sec" id="auZ-Yg-McM"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="tBj-Ec-w00" firstAttribute="top" secondItem="bnj-tx-wGl" secondAttribute="top" id="5zE-Fk-Le9"/>
+                            <constraint firstItem="g6a-vs-mAZ" firstAttribute="top" secondItem="bnj-tx-wGl" secondAttribute="top" id="L9r-4v-jvi"/>
                             <constraint firstItem="bnj-tx-wGl" firstAttribute="bottom" secondItem="tBj-Ec-w00" secondAttribute="bottom" id="Lkl-QZ-nRr"/>
-                            <constraint firstItem="tBj-Ec-w00" firstAttribute="top" secondItem="bnj-tx-wGl" secondAttribute="top" id="egx-gf-oRe"/>
+                            <constraint firstItem="g6a-vs-mAZ" firstAttribute="leading" secondItem="bnj-tx-wGl" secondAttribute="leading" id="dBK-Kr-5mD"/>
+                            <constraint firstItem="bnj-tx-wGl" firstAttribute="trailing" secondItem="g6a-vs-mAZ" secondAttribute="trailing" id="fbf-5z-OiA"/>
                             <constraint firstItem="bnj-tx-wGl" firstAttribute="trailing" secondItem="tBj-Ec-w00" secondAttribute="trailing" id="o9z-kg-mkf"/>
                             <constraint firstItem="tBj-Ec-w00" firstAttribute="leading" secondItem="bnj-tx-wGl" secondAttribute="leading" id="zFg-NQ-C4h"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="bnj-tx-wGl"/>
                     </view>
                     <connections>
+                        <outlet property="imageView" destination="tBj-Ec-w00" id="K2I-KR-Sh6"/>
                         <outlet property="memeImage" destination="tBj-Ec-w00" id="wdm-Fn-IOq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yek-pa-Phc" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2185" y="311"/>
+            <point key="canvasLocation" x="2136.8000000000002" y="438.53073463268368"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ayR-nm-5Xb">

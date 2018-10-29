@@ -37,13 +37,11 @@ class MemesCollectionViewController: UICollectionViewController {
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        
         return 1
     }
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
         return memes!.count
     }
 
@@ -57,6 +55,7 @@ class MemesCollectionViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let viewController = storyboard?.instantiateViewController(withIdentifier: "ShowMemeImageIdentity") as! ShowMemeImageViewController
         viewController.meme = self.memes![indexPath.row]
+        viewController.indexOfmeme = indexPath.row
         navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -64,7 +63,7 @@ class MemesCollectionViewController: UICollectionViewController {
     
     func setupCollectionViewItem (space: CGFloat){
         
-        let dimension = (view.frame.size.width - (2 * space)) / space
+        let dimension = (view.frame.size.width - (3 * space)) / 4
         flowLayout.minimumInteritemSpacing = space
         flowLayout.minimumLineSpacing = space
         flowLayout.itemSize = CGSize(width: dimension, height: dimension)

@@ -26,10 +26,7 @@ class MemesTableViewController: UITableViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        let appDelegate = UIApplication.shared.delegate as? AppDelegate
-        guard let memeArray = appDelegate?.memes else { return }
-        memes = memeArray
-        memesTable.reloadData()
+        getAndSetAppDelegateArray(set: false)
     }
     
     // MARK: UITableViewDataSource methods
@@ -52,7 +49,31 @@ class MemesTableViewController: UITableViewController {
        
         let viewController = storyboard?.instantiateViewController(withIdentifier: "ShowMemeImageIdentity") as! ShowMemeImageViewController
         viewController.meme = self.memes![indexPath.row]
+        viewController.indexOfmeme = indexPath.row
         navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete {
+            memes?.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            getAndSetAppDelegateArray(set: true)
+        }
+    }
+    
+    // MARK: Functions
+    
+    func getAndSetAppDelegateArray (set: Bool){
+        
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        if set {
+            appDelegate?.memes = memes!
+        } else {
+            guard let memeArray = appDelegate?.memes else { return }
+            memes = memeArray
+        }
+        memesTable.reloadData()
     }
     
 }
