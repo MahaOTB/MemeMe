@@ -39,8 +39,8 @@ class MemesTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentity)
-        cell?.textLabel?.text = ("\(memes![indexPath.row].topText!) | \(memes![indexPath.row].botoomText!)")
-        cell?.imageView?.image = memes![indexPath.row].memoImage
+        cell?.textLabel?.text = ("\(memes![indexPath.row].topText!) | \(memes![indexPath.row].bottomText!)")
+        cell?.imageView?.image = memes![indexPath.row].memeImage
         
         return cell!
     }

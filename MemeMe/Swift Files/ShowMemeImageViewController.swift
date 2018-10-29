@@ -21,7 +21,7 @@ class ShowMemeImageViewController: UIViewController {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
-        memeImage.image = meme?.memoImage
+        memeImage.image = meme?.memeImage
         imageView.contentMode = .scaleAspectFit
     }
     

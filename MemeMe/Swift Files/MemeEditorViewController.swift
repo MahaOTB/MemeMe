@@ -33,8 +33,8 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     var reEditedMeme: Meme?
     var indexOfEditedMeme: Int?
     let imagePicker = UIImagePickerController()
-    var defualtTextFieldTop: String?
-    var defualtTextFieldTBottom: String?
+    var defaultTextFieldTop: String?
+    var defaultTextFieldTBottom: String?
     let memeTextAttributes:[NSAttributedString.Key: Any] = [
         NSAttributedString.Key.strokeColor: UIColor.black,
         NSAttributedString.Key.foregroundColor: UIColor.white,
@@ -67,14 +67,15 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
         super.viewWillAppear(animated)
         subscribeToKeyboardNotifications()
         
-        defualtTextFieldTop = textFieldTop.text
-        defualtTextFieldTBottom = textFieldBottom.text
+        defaultTextFieldTop = textFieldTop.text
+        defaultTextFieldTBottom = textFieldBottom.text
         
         btnCamera.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        unsubscribeFromKeyboardNotifications()
         self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
@@ -101,9 +102,9 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
             showAlert(title: Alerts.noImage)
             return
         }
-        let memoImgae = generateMemedImage()
+        let memeImgae = generateMemedImage()
         
-        let activityController = UIActivityViewController(activityItems: [memoImgae], applicationActivities: nil)
+        let activityController = UIActivityViewController(activityItems: [memeImgae], applicationActivities: nil)
         activityController.popoverPresentationController?.sourceView = self.view
         present(activityController, animated: true)
         activityController.completionWithItemsHandler = { _, success, _, error in
@@ -146,7 +147,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     
     func saveImage() {
         // Create meme object
-        let meme = Meme(topText: textFieldTop.text, botoomText: textFieldBottom.text, originalImage: imageView.image, memoImage: generateMemedImage())
+        let meme = Meme(topText: textFieldTop.text, bottomText: textFieldBottom.text, originalImage: imageView.image, memeImage: generateMemedImage())
         
         let appDelegate = UIApplication.shared.delegate as? AppDelegate
         
@@ -186,7 +187,7 @@ class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegat
     func editedMeme (editedmeme: Meme){
         imageView.image = editedmeme.originalImage
         textFieldTop.text = editedmeme.topText
-        textFieldBottom.text = editedmeme.botoomText
+        textFieldBottom.text = editedmeme.bottomText
     }
     
     //Functions to show and hide keyboard
