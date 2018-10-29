@@ -53,7 +53,7 @@ class PreventTextOfTextFieldExceedDelegate: NSObject, UITextFieldDelegate {
     
     func textFieldDidEndEditing(_ textField: UITextField) {
         
-        let viewController = ViewController()
+        let viewController = MemeEditorViewController()
         viewController.unsubscribeFromKeyboardNotifications()
     }
     

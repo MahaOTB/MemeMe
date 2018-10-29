@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class MemeEditorViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // MARK: Alerts
     struct Alerts {
@@ -37,13 +37,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
         NSAttributedString.Key.strokeWidth: -1]
     
-    struct Memo {
-        var topText: String?
-        var botoomText: String?
-        var originalImage: UIImage?
-        var memoImage: UIImage?
-    }
-    
     // MARK: Text Field Delegate objects
     
     let PreventTextDelegate = PreventTextOfTextFieldExceedDelegate()
@@ -69,8 +62,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         defualtTextFieldTBottom = textFieldBottom.text
         
         btnCamera.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
     // MARK: Actions
     
     @IBAction func openPhotoAlbumAndCamera(_ sender: UIBarButtonItem) {
@@ -101,6 +98,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         activityController.completionWithItemsHandler = { _, success, _, error in
             if success {
                 self.saveImage()
+                self.navigationController?.popViewController(animated: true)
             } else if let errorOccur = error {
                 self.showAlert(title: "Error", message: errorOccur.localizedDescription)
             }
@@ -140,7 +138,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func saveImage() {
         // Create meme object
-        let _ = Memo(topText: textFieldTop.text, botoomText: textFieldBottom.text, originalImage: imageView.image, memoImage: generateMemedImage())
+        let meme = Meme(topText: textFieldTop.text, botoomText: textFieldBottom.text, originalImage: imageView.image, memoImage: generateMemedImage())
+        
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        appDelegate?.memes.append(meme)
     }
     
     func generateMemedImage() -> UIImage {
